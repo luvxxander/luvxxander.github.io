@@ -5,8 +5,9 @@
   --bg-light: #f2f2f7;
   --text-light: #e0e0ff;
   --text-dark: #121212;
-  --neon-pink: #ff007c;
+  --neon-pink: #ff00ff;
   --neon-purple: #8a00ff;
+  --neon-cyan: #00fff7;
   --transition-speed: 0.4s;
 }
 
@@ -21,22 +22,54 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 2rem 1rem;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Animated gradient background */
+body::before {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(270deg, 
+    #ff00ff, #00fff7, #8a00ff, #ff00ff);
+  background-size: 800% 800%;
+  animation: gradientAnimation 15s ease infinite;
+  filter: blur(100px);
+  z-index: -1;
+}
+
+@keyframes gradientAnimation {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
 }
 
 body.light-mode {
   background-color: var(--bg-light);
   color: var(--text-dark);
 }
+body.light-mode::before {
+  filter: blur(50px);
+  background: linear-gradient(270deg, #f06292, #4dd0e1, #ba68c8, #f06292);
+}
 
 h1.typing {
-  font-size: 4rem;
+  font-size: 5rem;
   letter-spacing: 0.15em;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   white-space: nowrap;
   overflow: hidden;
   border-right: 0.15em solid var(--neon-pink);
-  animation: typing 3s steps(10), blink-caret 0.75s step-end infinite;
+  animation: typing 3s steps(14), blink-caret 0.75s step-end infinite;
   max-width: 14ch;
+  text-shadow:
+    0 0 5px var(--neon-pink),
+    0 0 10px var(--neon-pink),
+    0 0 20px var(--neon-purple);
 }
 
 @keyframes typing {
@@ -53,44 +86,53 @@ h1.typing {
   flex-wrap: wrap;
   justify-content: center;
   gap: 1.5rem;
-  max-width: 600px;
+  max-width: 700px;
   margin-bottom: 3rem;
+  user-select: none;
 }
 
 .socials a {
-  background: rgba(255, 0, 124, 0.15);
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
+  background: rgba(255, 0, 255, 0.15);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   color: var(--text-light);
   text-decoration: none;
-  box-shadow: 0 0 15px var(--neon-pink);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow:
+    0 0 15px var(--neon-pink),
+    0 0 30px var(--neon-purple);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+  font-weight: 600;
+  font-size: 1.1rem;
 }
 
 body.light-mode .socials a {
-  background: rgba(255, 0, 124, 0.3);
+  background: rgba(255, 105, 180, 0.3);
   color: var(--text-dark);
-  box-shadow: 0 0 15px var(--neon-purple);
+  box-shadow:
+    0 0 15px #f06292,
+    0 0 30px #ba68c8;
 }
 
 .socials a:hover {
   background: var(--neon-pink);
-  box-shadow: 0 0 25px var(--neon-pink);
+  box-shadow:
+    0 0 30px var(--neon-pink),
+    0 0 60px var(--neon-purple);
   color: #fff;
 }
 
 .socials img {
-  width: 24px;
-  height: 24px;
-  filter: invert(90%) sepia(1%) saturate(500%) hue-rotate(300deg);
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 0 3px var(--neon-pink));
   transition: filter 0.3s ease;
 }
 
 body.light-mode .socials img {
-  filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg);
+  filter: drop-shadow(0 0 2px var(--neon-purple));
 }
 
 .music-control {
@@ -98,20 +140,28 @@ body.light-mode .socials img {
 }
 
 #music-toggle {
-  background: var(--neon-purple);
+  background: var(--neon-cyan);
   border: none;
-  color: #fff;
-  padding: 0.75rem 1.25rem;
+  color: #121212;
+  padding: 0.85rem 1.8rem;
   border-radius: 9999px;
-  font-size: 1rem;
+  font-size: 1.1rem;
   cursor: pointer;
-  box-shadow: 0 0 15px var(--neon-purple);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow:
+    0 0 15px var(--neon-cyan),
+    0 0 40px var(--neon-cyan);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+  user-select: none;
 }
 
 #music-toggle:hover {
   background: var(--neon-pink);
-  box-shadow: 0 0 25px var(--neon-pink);
+  color: #fff;
+  box-shadow:
+    0 0 30px var(--neon-pink),
+    0 0 70px var(--neon-pink);
 }
 
 #mode-toggle {
@@ -121,12 +171,13 @@ body.light-mode .socials img {
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: var(--text-light);
   user-select: none;
   z-index: 1000;
   display: flex;
   align-items: center;
+  transition: color 0.3s ease;
 }
 
 body.light-mode #mode-toggle {
@@ -135,8 +186,40 @@ body.light-mode #mode-toggle {
 
 .icon {
   display: none;
+  user-select: none;
 }
 
 .icon.active {
   display: inline;
+}
+
+/* Scroll bar styling */
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #111;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--neon-pink);
+  border-radius: 10px;
+  box-shadow:
+    0 0 10px var(--neon-pink);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  h1.typing {
+    font-size: 3rem;
+  }
+  .socials a {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+  #music-toggle {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+  }
 }
