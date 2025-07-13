@@ -42,10 +42,14 @@ const bgMusic = document.getElementById('bg-music');
 
 musicToggle.addEventListener('click', () => {
   if (bgMusic.paused) {
-    bgMusic.play();
+    bgMusic.play().catch(e => console.log('Autoplay prevented:', e));
     musicToggle.textContent = '🔈 Pause Music';
   } else {
     bgMusic.pause();
     musicToggle.textContent = '🔊 Play Music';
   }
 });
+
+// Autoplay permission tip:
+// Browsers often block autoplay sound, so music might need a user interaction first.
+// This button ensures user clicks to start music.
